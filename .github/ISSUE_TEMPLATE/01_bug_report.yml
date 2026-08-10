@@ -1,0 +1,49 @@
+name: "Bug report"
+description: "Something broke. Tell me about it."
+title: "PACKAGENAME: BUG TITLE"
+labels: ["0. bug"]
+body:
+  - type: "textarea"
+    id: "description"
+    attributes:
+      label: "What broke?"
+      description: "Be specific. Vague bug reports age like milk."
+    validations:
+      required: true
+  - type: "textarea"
+    id: "how-to-reproduce"
+    attributes:
+      label: "Reproduction steps"
+      description: "Numbered steps. If I can't reproduce it, it doesn't exist."
+    validations:
+      required: true
+  - type: "input"
+    id: "expected-behaviour"
+    attributes:
+      label: "Expected behavior"
+      description: "What was supposed to happen instead?"
+    validations:
+      required: true
+  - type: "textarea"
+    id: "evidence"
+    attributes:
+      label: "Logs / screenshots"
+      description: "The more context, the less back-and-forth."
+      render: "console"
+    validations:
+      required: false
+  - type: "textarea"
+    id: "additional-context"
+    attributes:
+      label: "Anything else"
+    validations:
+      required: false
+  - type: "checkboxes"
+    id: "sanity-check"
+    attributes:
+      label: "Before you submit"
+      options:
+        - label: "This is an actual bug, not a question"
+          required: true
+        - label: "I checked [existing issues](https://github.com/74k1/tixpkgs/issues?q=is%3Aissue+label%3A%220.+bug%22)"
+          required: true

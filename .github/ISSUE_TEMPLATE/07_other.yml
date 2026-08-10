@@ -1,0 +1,12 @@
+name: "Other"
+description: "Doesn't fit the other templates."
+title: "TITLE"
+labels: ["0. request"]
+body:
+  - type: "textarea"
+    id: "description"
+    attributes:
+      label: "What's on your mind?"
+      description: "Go ahead."
+    validations:
+      required: true

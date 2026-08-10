@@ -1,0 +1,40 @@
+name: "Build failure"
+description: "A package won't build. Classic."
+title: "Build Failure: PACKAGENAME"
+labels: ["0. build failure"]
+body:
+  - type: "input"
+    id: "version"
+    attributes:
+      label: "Nix version"
+      description: "Output of `nix --version`"
+    validations:
+      required: true
+  - type: "input"
+    id: "system"
+    attributes:
+      label: "System"
+      description: "e.g. `x86_64-linux`, `aarch64-darwin`. Run `nix eval --impure --expr builtins.currentSystem` if unsure."
+    validations:
+      required: true
+  - type: "textarea"
+    id: "logs"
+    attributes:
+      label: "Build log"
+      description: "The relevant part. Not the entire derivation output, please."
+      render: "console"
+    validations:
+      required: true
+  - type: "textarea"
+    id: "additional-context"
+    attributes:
+      label: "Anything else"
+    validations:
+      required: false
+  - type: "checkboxes"
+    id: "sanity-check"
+    attributes:
+      label: "Before you submit"
+      options:
+        - label: "I checked [existing issues](https://github.com/74k1/tixpkgs/issues?q=is%3Aissue+label%3A%220.+build+failure%22)"
+          required: true

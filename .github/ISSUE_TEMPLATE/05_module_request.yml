@@ -1,0 +1,32 @@
+name: "Module request"
+description: "Want a NixOS module for an existing package."
+title: "Module Request: MODULENAME"
+labels: ["0. request"]
+body:
+  - type: "input"
+    id: "module-name"
+    attributes:
+      label: "Module"
+      description: "Which package should this module wrap?"
+    validations:
+      required: true
+  - type: "textarea"
+    id: "description"
+    attributes:
+      label: "What should it do?"
+      description: "Describe the module, or sketch out how you'd want to use it in your config."
+    validations:
+      required: true
+  - type: "input"
+    id: "docs"
+    attributes:
+      label: "Relevant docs"
+      description: "Link to upstream documentation, if any."
+    validations:
+      required: false
+  - type: "textarea"
+    id: "additional-context"
+    attributes:
+      label: "Anything else"
+    validations:
+      required: false
