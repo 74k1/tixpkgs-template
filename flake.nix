@@ -8,10 +8,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -38,7 +34,6 @@
       mkModules = import ./modules/flake/modules.nix { inherit self inputs lib; };
 
       nixosModules = mkModules ./modules/nixos;
-      homeManagerModules = mkModules ./modules/home-manager;
     in
     {
       packages = forAllSystems (system: mkPackages (pkgsFor system));
@@ -47,8 +42,6 @@
 
       nixosModules = nixosModules.flat;
       nixosModules' = nixosModules.nested;
-      homeManagerModules = homeManagerModules.flat;
-      homeManagerModules' = homeManagerModules.nested;
 
       # Module tests only run on the platform the modules/packages target.
       checks.x86_64-linux = import ./modules/flake/checks.nix {

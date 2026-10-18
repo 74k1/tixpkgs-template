@@ -4,12 +4,11 @@ This directory holds tests for the packages and modules of this flake. Each test
 
 ## Layout
 
-Tests are `.nix` files in these directories:
+Tests are `.nix` files in this directory:
 
 - `modules/tests/nixos/<category>/<module-path>/<test>.nix` for NixOS
-- `modules/tests/home-manager/<module-path>/<test>.nix` for Home Manager
 
-For NixOS, `<category>` is one of:
+`<category>` is one of:
 
 - `services`: tests for `services.*` modules
 - `pkgs`: tests for packages that have no module
@@ -22,26 +21,16 @@ The check name comes from the file path. Dots and slashes become dashes. The nam
 
 ```sh
 nix build .#checks.x86_64-linux.module-nixos-services-hello-basic
-nix build .#checks.x86_64-linux.module-home-manager-programs-hello-basic
 ```
 
 The flake finds your test files automatically. You do not need to edit `modules/flake/checks.nix`.
 
 ## What a test file can return
 
-A NixOS test file can return:
+A test file can return:
 
 - a normal attribute set for `pkgs.testers.runNixOSTest`
 - a derivation, for a custom test
-
-A Home Manager test file can return:
-
-- a Home Manager module
-- a list of modules
-- `{ modules = [ ... ]; }`
-- a derivation, for a custom test
-
-For Home Manager tests, the harness wraps your modules in a fixed test configuration. The user is `hm-test` with home `/home/hm-test`.
 
 ## Example
 

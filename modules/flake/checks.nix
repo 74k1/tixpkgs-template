@@ -25,7 +25,7 @@ let
       testName = lib.removeSuffix ".nix" (lib.last parts);
       moduleParts = lib.init parts;
       moduleName = lib.concatStringsSep "/" moduleParts;
-      moduleSet = if kind == "nixos" then self.nixosModules else self.homeManagerModules;
+      moduleSet = self.nixosModules;
     in
     {
       inherit moduleName testName;
@@ -85,42 +85,6 @@ let
     else
       pkgs.testers.runNixOSTest (value // { name = value.name or info.checkName; });
 
-  mkHomeManagerCheck =
-    info:
-    let
-      value = callTest info;
-      moduleImports = lib.optional (info.module != null) info.module;
-      baseModule =
-        { lib, ... }:
-        {
-          home = {
-            username = "hm-test";
-            homeDirectory = "/home/hm-test";
-            stateVersion = lib.mkDefault "25.05";
-          };
-
-          manual.manpages.enable = lib.mkDefault false;
-          programs.home-manager.enable = lib.mkDefault false;
-        };
-      normalized =
-        if builtins.isAttrs value && value ? modules then
-          value
-        else
-          {
-            modules = if builtins.isList value then value else [ value ];
-          };
-      hm = inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = {
-          inherit inputs self;
-          tixpkgs = self.packages.${system};
-        }
-        // (normalized.extraSpecialArgs or { });
-        modules = moduleImports ++ [ baseModule ] ++ normalized.modules;
-      };
-    in
-    if lib.isDerivation value then value else hm.activationPackage;
-
   mkChecksFor =
     kind: mkCheck:
     lib.listToAttrs (
@@ -133,4 +97,4 @@ let
       ) (testFiles kind)
     );
 in
-mkChecksFor "nixos" mkNixosCheck // mkChecksFor "home-manager" mkHomeManagerCheck
+mkChecksFor "nixos" mkNixosCheck

@@ -5,7 +5,7 @@
 
 # About
 
-This repository holds my personal Nix packages and my NixOS and Home Manager modules. It follows the usual nixpkgs structure. The packages and modules here are not in upstream nixpkgs, because they are things I wanted to use or test quickly.
+This repository holds my personal Nix packages and my NixOS modules. It follows the usual nixpkgs structure. The packages and modules here are not in upstream nixpkgs, because they are things I wanted to use or test quickly.
 
 Use this repository as a template for your own nixpkgs. Fork it, keep the structure, and add your own packages and modules. The flake finds them automatically. You do not need to edit `flake.nix` or any index file.
 
@@ -34,11 +34,10 @@ The flake exposes the package as `packages.<system>.hello`. The package is also 
 
 # Adding a module
 
-Modules live in `modules/nixos/` for NixOS and `modules/home-manager/` for Home Manager. The folder path becomes the module name.
+Modules live in `modules/nixos/`. The folder path becomes the module name.
 
 ```
 modules/nixos/services/hello/default.nix          # -> nixosModules."services/hello"
-modules/home-manager/programs/hello/default.nix   # -> homeManagerModules."programs/hello"
 ```
 
 The flake exposes each module in two forms:
@@ -46,7 +45,7 @@ The flake exposes each module in two forms:
 - `nixosModules."services/hello"`, flat, with a `/` in the name
 - `nixosModules'.services.hello`, nested, like a normal attribute set
 
-The same split applies to Home Manager modules. See [Modules](#modules) for how to import them.
+See [Modules](#modules) for how to import them.
 
 A module can ask for extra arguments. The flake passes these arguments to any module that declares them:
 
@@ -72,7 +71,7 @@ The `workflows/` directory holds GitHub Actions workflows. They are disabled. Co
 
 # Usage
 
-To use this flake in your own setup, include it as a flake input. Make sure that `home-manager` follows your `nixpkgs` input.
+To use this flake in your own setup, include it as a flake input. Make sure that your `nixpkgs` input is `nixos-unstable`.
 
 In your `flake.nix`:
 
@@ -80,16 +79,9 @@ In your `flake.nix`:
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     tixpkgs = {
       url = "github:74k1/tixpkgs";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     ...
   };
@@ -118,7 +110,7 @@ nix.settings = {
 
 This flake exports modules in two forms:
 
-- `nixosModules'` and `homeManagerModules'`, nested, like a normal attribute set
+- `nixosModules'`, nested, like a normal attribute set
 
 <details>
   <summary>example</summary>
@@ -138,7 +130,7 @@ This flake exports modules in two forms:
 ```
 </details>
 
-- `nixosModules` and `homeManagerModules`, flat, with a `/` in each name
+- `nixosModules`, flat, with a `/` in each name
 
 <details>
   <summary>example</summary>
@@ -161,14 +153,6 @@ This flake exports modules in two forms:
 |---|---|
 | `services.hello` | N/A |
 <!-- END NIXOS MODULES -->
-
-## Home Manager Modules
-
-<!-- BEGIN HOME MANAGER MODULES -->
-| Module | Docs |
-|---|---|
-| `programs.hello` | N/A |
-<!-- END HOME MANAGER MODULES -->
 
 # Packages
 
